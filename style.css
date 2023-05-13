@@ -3,24 +3,27 @@
     --color-myrtle-green: #387780;
     --color-light-blue: #9cccd3;
     --color-black-olive: #212518;
-    --color-ash-grey: #c7cfb4;
+    --color-platinum: #e0e0e0;
     --color-white-smoke: #f5f5f5;
     --color-french-grey: #c9cbcf;
     --color-pumpkin: #f0803c;
 
     /* Background colors */
     --body-bg-color: var(--color-white-smoke);
-    --calc-bg-color: var(--color-light-blue);
-    --display-bg-color: var(--color-black-olive);
+    --calc-bg-color: var(--color-platinum);
+    --display-bg-color: var(--color-light-blue);
     --num-button-bg-color: var(--color-french-grey);
     --calc-button-bg-color: var(--color-myrtle-green);
     --clear-button-bg-color: var(--color-pumpkin);
-    --delete-equal-button-bg-color: var(--color-ash-grey);
+    --delete-equal-button-bg-color: var(--color-french-grey);
 
     /* text colors */
     --title-color: var(--color-pumpkin);
     --footer-text-color: var(--color-black-olive);
     --button-text-color: var(--color-black-olive);
+
+    /* rounded corners */
+    --rounded-corners: 3px;
 
 }
 
@@ -47,23 +50,29 @@ body {
     color: var(--footer-text-color);
 }
 
+/* calculator */
 .calc-container {
     background-color: var(--calc-bg-color);
     width: 400px;
-    height: 600px;
+    height: 450px;
     padding: 20px;
+    border-style: groove;
+    border-radius: var(--rounded-corners);
 
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: stretch;
     gap: 20px;
 }
 
 .display-container {
     background-color: var(--display-bg-color);
-    background-blend-mode: lighten;
-    min-height: 30%;
+    width: auto;
+    height: 20%;
+    border-style: inset;
+    border-radius: var(--rounded-corners);
+    padding: 10px;
 
     display: flex;
     flex-direction: column;
@@ -71,10 +80,20 @@ body {
     align-items: flex-end;
 }
 
+.display-calc{
+    margin: 0px;
+}
+
+.display-result{
+   margin: 0px;
+   font-size: 40px;
+}
+
 .button-container{
     display: flex;
-    justify-content: flex-start;
-    align-items: start;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
 }
 
 .num-button-container{
@@ -82,6 +101,7 @@ body {
 
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
 .non-num-button-container{
@@ -89,10 +109,48 @@ body {
 
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
+}
+
+button{
+    min-width: 65px;
+    min-height: 65px;
+    font-size: 24px;
+    border-style: outset;
+}
+
+.singleButton{
+    flex: 1;
+}
+
+.doubleButton{
+    flex: 2;
+}
+
+.clear{
+    background-color: var(--color-pumpkin);
+}
+
+.calc{
+    background-color: var(--calc-button-bg-color);
+}
+
+.delete,
+.equal{
+    background-color: var(--delete-equal-button-bg-color);
+}
+
+.clear:hover,
+.calc:hover,
+.delete:hover,
+.equal:hover{
+    opacity: 0.7;
 }
 
 .number{
-    min-width: 80;
-    min-height: 80;
-    
+    background-color: var(--color-white-smoke);
+}
+
+.number:hover{
+    background-color: var(--color-ash-grey);
 }
