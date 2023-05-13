@@ -18,26 +18,26 @@
 
         <div class="button-container">
             <div class="num-button-container">
-                <button class="number singleButton">1</button>
-                <button class="number singleButton">2</button>
-                <button class="number singleButton">3</button>
-                <button class="number singleButton">4</button>
-                <button class="number singleButton">5</button>
-                <button class="number singleButton">6</button>
-                <button class="number singleButton">7</button>
-                <button class="number singleButton">8</button>
-                <button class="number singleButton">9</button>
-                <button class="number doubleButton">0</button>
-                <button class="number singleButton">.</button>
+                <button class="number singleButton" onclick="handleNumberClick(1)">1</button>
+                <button class="number singleButton" onclick="handleNumberClick(2)">2</button>
+                <button class="number singleButton" onclick="handleNumberClick(3)">3</button>
+                <button class="number singleButton" onclick="handleNumberClick(4)">4</button>
+                <button class="number singleButton" onclick="handleNumberClick(5)">5</button>
+                <button class="number singleButton" onclick="handleNumberClick(6)">6</button>
+                <button class="number singleButton" onclick="handleNumberClick(7)">7</button>
+                <button class="number singleButton" onclick="handleNumberClick(8)">8</button>
+                <button class="number singleButton" onclick="handleNumberClick(9)">9</button>
+                <button class="number doubleButton" onclick="handleNumberClick(0)">0</button>
+                <button class="number singleButton" onclick="handleNumberClick('.')">.</button>
             </div>
             <div class="non-num-button-container">
-                <button class="calc singleButton">+</button>
-                <button class="calc singleButton">*</button>
-                <button class="calc singleButton">-</button>
-                <button class="calc singleButton">:</button>
+                <button class="operator singleButton" onclick="handleOperatorClick('addition')">+</button>
+                <button class="operator singleButton" onclick="handleOperatorClick('multiplication')">*</button>
+                <button class="operator singleButton" onclick="handleOperatorClick('subtraction')">-</button>
+                <button class="operator singleButton" onclick="handleOperatorClick('division')">:</button>
                 <button class="delete singleButton">&#10508</button>
-                <button class="clear singleButton">cl</button>
-                <button class="equal doubleButton">=</button>
+                <button class="clear singleButton" onclick="handleClearClick()">cl</button>
+                <button class="equal doubleButton" onclick="handleShowResultClick()">=</button>
             </div>
         </div>
     </div>

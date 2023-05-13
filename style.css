@@ -44,6 +44,8 @@ body {
 
 .title {
     color: var(--title-color);
+    margin-top: 30px;
+    font-size: 40px;
 }
 
 .footer {
@@ -131,7 +133,7 @@ button{
     background-color: var(--color-pumpkin);
 }
 
-.calc{
+.operator{
     background-color: var(--calc-button-bg-color);
 }
 
@@ -141,7 +143,7 @@ button{
 }
 
 .clear:hover,
-.calc:hover,
+.operator:hover,
 .delete:hover,
 .equal:hover{
     opacity: 0.7;
