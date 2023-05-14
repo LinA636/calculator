@@ -1,17 +1,21 @@
-function addition(a,b){
-    return a+b;
+let numArray = [];
+let operatorArray = [];
+let lastClick = "";
+
+function addition(a, b) {
+    return a + b;
 }
 
-function subtraction(a,b){
-    return a-b;
+function subtraction(a, b) {
+    return a - b;
 }
 
-function multiplication(a,b){
-    return a*b;
+function multiplication(a, b) {
+    return a * b;
 }
 
-function subtraction(a, b){
-    return b===0 ? 'ERROR': a/b;
+function subtraction(a, b) {
+    return b === 0 ? 'ERROR' : a / b;
 }
 /* ideas
 
@@ -19,7 +23,32 @@ need some kind of counter to get track of
 how many numbers have been calc without delting tehm,
 so the ycan still be shown in dsplay-calc.*/
 
-function handleNumberClick(number){
+function actualiseDisplayCalc() {
+    const displayCalc = document.querySelector(".display-calc");
+    if (operatorArray.length === 0) {
+        displayCalc.innerHTML = numArray[0];
+    } else {
+        let text = "";
+        const numArrayLength = numArray.length;
+        for (let i = 0; i < numArrayLength; i++) {
+            text += numArray[i] + " " + operatorArray[i];
+        }
+    }
+}
+
+function setLastClick(value) {
+    lastClick = value;
+}
+
+function getLastClick() {
+    return lastClick;
+}
+
+function createOneNumber(number) {
+    return numArray[numArray.length - 1] * 10 + number;
+}
+
+function handleNumberClick(number) {
     // one of the number buttons or the decimal-button was clicked.
     /* TODOS
         if first click (no number value exists yet) 
@@ -33,9 +62,25 @@ function handleNumberClick(number){
             else
                 save number in new value and actualise display-calc
                  */
+
+    if (numArray.length === 0) {
+        numArray[0] = number;
+        actualiseDisplayCalc();
+        setLastClick("number");
+    } else if (getLastClick() === "number") {
+        numArray[numArray.length - 1] = createOneNumber(number);
+        actualiseDisplayCalc();
+    } else if (getLastClick() != "number") {
+        numArray.push(number);
+        console.log(numArray);
+        actualiseDisplayCalc();
+        setLastClick("number");
+    }
+
+
 }
 
-function handleOperatorClick(operator){
+function handleOperatorClick(operator) {
     // a calc-button has been clicked
     /* TODOS
         if no num-value exists
@@ -54,17 +99,18 @@ function handleOperatorClick(operator){
             delete not needed num-values and operators.
 
     */
+   setLastClick("operator");
 }
 
-function handleClearClick(){
+function handleClearClick() {
     // clear-button was clicked
-/* TODOS
-    delete all safed nu-values and operator
-    clear display
-    */
+    /* TODOS
+        delete all safed nu-values and operator
+        clear display
+        */
 }
 
-function handleShowResultClick(){
+function handleShowResultClick() {
     // equal-button was cicked
     /* TODOS
         if no num-value exists
