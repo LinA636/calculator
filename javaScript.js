@@ -1,7 +1,7 @@
 let numArray = [];
 let operatorArray = [];
 let lastClick = null;
-let resultArray = null;
+let result = null;
 
 function addition(a, b) {
     return a + b;
@@ -74,34 +74,33 @@ function getLastClick() {
     return lastClick;
 }
 
+function setResult(value) {
+    result = value;
+}
+
+function getResult() {
+    return result;
+}
+
 function createOneNumber(number) {
     return numArray[numArray.length - 1] * 10 + number;
 }
 
 function handleNumberClick(number) {
-    // one of the number buttons or the decimal-button was clicked.
-    /* TODOS
-        if first click (no number value exists yet) 
-            save and display (display calc) number
-        else if last click was a number as well
-            make one number out of both
-        else if last click was another click
-            if last operator was devision
-                 if current number is 0 => catch if subtraction returns'ERROR' instead of number
-                    display (display-result) ERROR and clear all values
-            else
-                save number in new value and actualise display-calc
-                 */
-
-    if (numArray.length === 0) {
-        numArray[0] = number;
-    } else if (getLastClick() === "number") {
-        numArray[numArray.length - 1] = createOneNumber(number);
-    } else if (getLastClick() != "number") {
-        numArray.push(number);
+    if (getResult() === "ERROR") {
+        handleClearClick();
+        handleNumberClick(number);
+    } else {
+        if (numArray.length === 0) {
+            numArray[0] = number;
+        } else if (getLastClick() === "number") {
+            numArray[numArray.length - 1] = createOneNumber(number);
+        } else if (getLastClick() != "number") {
+            numArray.push(number);
+        }
+        setLastClick("number");
+        actualiseDisplayCalc();
     }
-    setLastClick("number");
-    actualiseDisplayCalc();
 }
 
 function handleDecimalPointClick() {
@@ -109,81 +108,55 @@ function handleDecimalPointClick() {
 }
 
 function handleOperatorClick(selctedOperator) {
-    // a calc-button has been clicked
-    /* TODOS
-        if no num-value exists
-            do nothing
-        else if one num-value exists
-            if last click was calc-click
-                change last saved operator-value and actualise display-calc
-            else
-                save operator and actualise display-calc
-        else if two num-values exist
-                handle as if showResult-button was clicked with addition of operator-click
-            save new operator
-            get result of the last two numbers calc with the last safed operator
-            display result
-            acualise display-calc
-
-    */
-    if (numArray.length === 0) {
-        // Do nothing
-    } else if (getLastClick() === "operator") {
-        /* console.log(numArray); */
-        operatorArray[operatorArray.length - 1] = selctedOperator;
-        actualiseDisplayCalc();
-    } else if (numArray.length === 1) {
-        operatorArray.push(selctedOperator);
-        actualiseDisplayCalc();
+    if (getResult() === "ERROR") {
+        handleClearClick();
     } else {
-        if (numArray.length === 2 && operatorArray.length === 1) {
-            result = operate(operatorArray[0], numArray[0], numArray[1]);
-        } else if (numArray.length > 2 && operatorArray.length > 1) {
-            result = operate(operatorArray[operatorArray.length - 1], result, numArray[numArray.length - 1]);
+        if (numArray.length === 0) {
+            // do nothing
+        } else if (numArray.length === 1) {
+            operatorArray.push(selctedOperator);
+            actualiseDisplayCalc();
+            setLastClick("operator");
+        } else {
+            if (getLastClick() === "operator") {
+                operatorArray[operatorArray.length - 1] = selctedOperator;
+            } else if (getLastClick() === "equal") {
+                operatorArray.push(selctedOperator);
+            } else {
+                if (numArray.length === 2) {
+                    setResult(operate(operatorArray[0], numArray[0], numArray[1]));
+                } else {
+                    setResult(operate(operatorArray[operatorArray.length - 1], getResult(), numArray[numArray.length - 1]));
+                }
+                operatorArray.push(selctedOperator);
+                actualiseDisplayResult();
+            }
+            actualiseDisplayCalc();
+            setLastClick("operator");
         }
-        operatorArray.push(selctedOperator);
-        actualiseDisplayResult();
-        actualiseDisplayCalc();
     }
-    setLastClick("operator");;
 }
 
 function handleClearClick() {
-    // clear-button was clicked
-    /* TODOS
-        delete all safed nu-values and operator
-        clear display
-        */
     numArray = [];
     operatorArray = [];
-    result = null;
+    setResult(null);
     setLastClick(null);
     clearDisplays();
 }
 
 function handleShowResultClick() {
-    // equal-button was cicked
-    /* TODOS
-        if no num-value exists
-            do nothing
-        else if one num-value exists
-            do nothing
-        else if one num-value and one operator exists
-            do nothing
-        else if two num-values exits and one operator
-            get result of calc
-            safe result and actualise display
-            */
-           console.log(lastClick);
-    if (getLastClick() != "number") {
-        //do nothing
-    } else if (numArray.length === 2 && operatorArray.length === 1) {
-        result = operate(operatorArray[0], numArray[0], numArray[1]);
-        actualiseDisplayResult();
-        setLastClick("equal");
-    } else if (numArray.length > 2 && operatorArray.length > 1) {
-        result = operate(operatorArray[operatorArray.length - 1], result, numArray[numArray.length - 1]);
-        actualiseDisplayResult();
-        setLastClick("equal");
+    if (getResult() === "ERROR") {
+        handleClearClick();
+    } else {
+        if (getLastClick() === "number") {
+            if (numArray.length === 2) {
+                setResult(operate(operatorArray[0], numArray[0], numArray[1]));
+            } else if (numArray.length > 2) {
+                setResult(operate(operatorArray[operatorArray.length - 1], result, numArray[numArray.length - 1]));
+            }
+            actualiseDisplayResult();
+            setLastClick("equal");
+        }
     }
 }
