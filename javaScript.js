@@ -100,9 +100,11 @@ function handleNumberClick(number) {
     } else if (getLastClick() != "number") {
         numArray.push(number);
     }
-    lastClick = "number";
+    setLastClick("number");
     actualiseDisplayCalc();
+}
 
+function handleDecimalPointClick() {
 
 }
 
@@ -134,12 +136,16 @@ function handleOperatorClick(selctedOperator) {
         operatorArray.push(selctedOperator);
         actualiseDisplayCalc();
     } else {
-        console.log("hi");
-        handleShowResultClick();
+        if (numArray.length === 2 && operatorArray.length === 1) {
+            result = operate(operatorArray[0], numArray[0], numArray[1]);
+        } else if (numArray.length > 2 && operatorArray.length > 1) {
+            result = operate(operatorArray[operatorArray.length - 1], result, numArray[numArray.length - 1]);
+        }
         operatorArray.push(selctedOperator);
+        actualiseDisplayResult();
         actualiseDisplayCalc();
     }
-    lastClick = "operator";
+    setLastClick("operator");;
 }
 
 function handleClearClick() {
@@ -151,7 +157,7 @@ function handleClearClick() {
     numArray = [];
     operatorArray = [];
     result = null;
-    lastClick = null;
+    setLastClick(null);
     clearDisplays();
 }
 
@@ -168,14 +174,16 @@ function handleShowResultClick() {
             get result of calc
             safe result and actualise display
             */
-           console.log("resuslt funk");
-    if (numArray.length === 2 && operatorArray.length === 1) {
+           console.log(lastClick);
+    if (getLastClick() != "number") {
+        //do nothing
+    } else if (numArray.length === 2 && operatorArray.length === 1) {
         result = operate(operatorArray[0], numArray[0], numArray[1]);
         actualiseDisplayResult();
-        setLastClick = "equal";
+        setLastClick("equal");
     } else if (numArray.length > 2 && operatorArray.length > 1) {
         result = operate(operatorArray[operatorArray.length - 1], result, numArray[numArray.length - 1]);
         actualiseDisplayResult();
-        setLastClick = "equal";
+        setLastClick("equal");
     }
 }
