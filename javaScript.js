@@ -1,7 +1,7 @@
 let numArray = [];
 let operatorArray = [];
-let lastClick = "";
-let resultArray = [];
+let lastClick =  null;
+let resultArray = null;
 
 function addition(a, b) {
     return a + b;
@@ -15,8 +15,20 @@ function multiplication(a, b) {
     return a * b;
 }
 
-function subtraction(a, b) {
+function division(a, b) {
     return b === 0 ? 'ERROR' : a / b;
+}
+
+function operate(selectedOperator, number1, number2){
+    if (selectedOperator === "+"){
+        return addition(number1, number2);
+    }else if (selectedOperator === "*"){
+        return multiplication(number1, number2);
+    } else if (selectedOperator === "-") {
+        return subtraction(number1, number2);
+    } else if (selectedOperator === ":") {
+        return division(number1, number2);
+    }
 }
 /* ideas
 
@@ -26,22 +38,32 @@ so the ycan still be shown in dsplay-calc.*/
 
 function actualiseDisplayCalc() {
     const displayCalc = document.querySelector(".display-calc");
-    console.log(numArray);
-    console.log(operatorArray);
     if (operatorArray.length === 0) {
         displayCalc.innerHTML = numArray[0];
     } else {
         let text = "";
         const numArrayLength = numArray.length;
         for (let i = 0; i < numArrayLength; i++) {
-            if (operatorArray[i] === undefined){
+            if (operatorArray[i] === undefined) {
                 text += numArray[i];
-            }else {
+            } else {
                 text += numArray[i] + " " + operatorArray[i] + " ";
             }
         }
         displayCalc.innerHTML = text;
     }
+}
+
+function actualiseDisplayResult(){
+    const displayResult = document.querySelector(".display-result");
+    displayResult.innerHTML = result;
+}
+
+function clearDisplays(){
+    const displayCalc = document.querySelector(".display-calc");
+    displayCalc.innerHTML = 0;
+    const displayResult = document.querySelector(".display-result");
+    displayResult.innerHTML = 0;
 }
 
 function setLastClick(value) {
@@ -73,16 +95,13 @@ function handleNumberClick(number) {
 
     if (numArray.length === 0) {
         numArray[0] = number;
-        actualiseDisplayCalc();
-        setLastClick("number");
     } else if (getLastClick() === "number") {
         numArray[numArray.length - 1] = createOneNumber(number);
-        actualiseDisplayCalc();
     } else if (getLastClick() != "number") {
         numArray.push(number);
-        actualiseDisplayCalc();
-        setLastClick("number");
     }
+    setLastClick("number");
+    actualiseDisplayCalc();
 
 
 }
@@ -106,13 +125,13 @@ function handleOperatorClick(selctedOperator) {
             delete not needed num-values and operators.
 
     */
-            console.log(getLastClick());
-   if (numArray.length === 0){
+    console.log(getLastClick());
+    if (numArray.length === 0) {
         // Do nothing
-   } else if (numArray.length === 1) {
-        if (getLastClick() === "operator"){
+    } else if (numArray.length === 1) {
+        if (getLastClick() === "operator") {
             /* console.log(numArray); */
-            operatorArray[operatorArray.length-1] = selctedOperator;
+            operatorArray[operatorArray.length - 1] = selctedOperator;
             console.log(operatorArray);
             actualiseDisplayCalc();
         } else {
@@ -120,8 +139,10 @@ function handleOperatorClick(selctedOperator) {
             console.log(operatorArray);
             actualiseDisplayCalc();
         }
-   } 
-   setLastClick("operator");
+    } else {
+
+    }
+    setLastClick("operator");
 }
 
 function handleClearClick() {
@@ -130,6 +151,11 @@ function handleClearClick() {
         delete all safed nu-values and operator
         clear display
         */
+       numArray = [];
+       operatorArray = [];
+       result = null;
+       setLastClick(null);
+       clearDisplays();
 }
 
 function handleShowResultClick() {
@@ -145,4 +171,10 @@ function handleShowResultClick() {
             get result of calc
             safe result and actualise display
             */
+    if (numArray.length === 2 && operatorArray.length === 1){
+        result = operate(operatorArray[0], numArray[0], numArray[1]);
+        actualiseDisplayResult();
+    } else if (numArray.length > 2 && operatorArray >1){
+       /*  result = operate(operatorArray[]) */
+    }
 }
