@@ -1,6 +1,7 @@
 let numArray = [];
 let operatorArray = [];
 let lastClick = "";
+let resultArray = [];
 
 function addition(a, b) {
     return a + b;
@@ -25,14 +26,21 @@ so the ycan still be shown in dsplay-calc.*/
 
 function actualiseDisplayCalc() {
     const displayCalc = document.querySelector(".display-calc");
+    console.log(numArray);
+    console.log(operatorArray);
     if (operatorArray.length === 0) {
         displayCalc.innerHTML = numArray[0];
     } else {
         let text = "";
         const numArrayLength = numArray.length;
         for (let i = 0; i < numArrayLength; i++) {
-            text += numArray[i] + " " + operatorArray[i];
+            if (operatorArray[i] === undefined){
+                text += numArray[i];
+            }else {
+                text += numArray[i] + " " + operatorArray[i] + " ";
+            }
         }
+        displayCalc.innerHTML = text;
     }
 }
 
@@ -72,7 +80,6 @@ function handleNumberClick(number) {
         actualiseDisplayCalc();
     } else if (getLastClick() != "number") {
         numArray.push(number);
-        console.log(numArray);
         actualiseDisplayCalc();
         setLastClick("number");
     }
@@ -80,7 +87,7 @@ function handleNumberClick(number) {
 
 }
 
-function handleOperatorClick(operator) {
+function handleOperatorClick(selctedOperator) {
     // a calc-button has been clicked
     /* TODOS
         if no num-value exists
@@ -99,6 +106,21 @@ function handleOperatorClick(operator) {
             delete not needed num-values and operators.
 
     */
+            console.log(getLastClick());
+   if (numArray.length === 0){
+        // Do nothing
+   } else if (numArray.length === 1) {
+        if (getLastClick() === "operator"){
+            /* console.log(numArray); */
+            operatorArray[operatorArray.length-1] = selctedOperator;
+            console.log(operatorArray);
+            actualiseDisplayCalc();
+        } else {
+            operatorArray.push(selctedOperator);
+            console.log(operatorArray);
+            actualiseDisplayCalc();
+        }
+   } 
    setLastClick("operator");
 }
 
