@@ -1,6 +1,6 @@
 let numArray = [];
 let operatorArray = [];
-let lastClick =  null;
+let lastClick = null;
 let resultArray = null;
 
 function addition(a, b) {
@@ -19,10 +19,10 @@ function division(a, b) {
     return b === 0 ? 'ERROR' : a / b;
 }
 
-function operate(selectedOperator, number1, number2){
-    if (selectedOperator === "+"){
+function operate(selectedOperator, number1, number2) {
+    if (selectedOperator === "+") {
         return addition(number1, number2);
-    }else if (selectedOperator === "*"){
+    } else if (selectedOperator === "*") {
         return multiplication(number1, number2);
     } else if (selectedOperator === "-") {
         return subtraction(number1, number2);
@@ -54,12 +54,12 @@ function actualiseDisplayCalc() {
     }
 }
 
-function actualiseDisplayResult(){
+function actualiseDisplayResult() {
     const displayResult = document.querySelector(".display-result");
     displayResult.innerHTML = result;
 }
 
-function clearDisplays(){
+function clearDisplays() {
     const displayCalc = document.querySelector(".display-calc");
     displayCalc.innerHTML = 0;
     const displayResult = document.querySelector(".display-result");
@@ -100,7 +100,7 @@ function handleNumberClick(number) {
     } else if (getLastClick() != "number") {
         numArray.push(number);
     }
-    setLastClick("number");
+    lastClick = "number";
     actualiseDisplayCalc();
 
 
@@ -122,27 +122,24 @@ function handleOperatorClick(selctedOperator) {
             get result of the last two numbers calc with the last safed operator
             display result
             acualise display-calc
-            delete not needed num-values and operators.
 
     */
-    console.log(getLastClick());
     if (numArray.length === 0) {
         // Do nothing
+    } else if (getLastClick() === "operator") {
+        /* console.log(numArray); */
+        operatorArray[operatorArray.length - 1] = selctedOperator;
+        actualiseDisplayCalc();
     } else if (numArray.length === 1) {
-        if (getLastClick() === "operator") {
-            /* console.log(numArray); */
-            operatorArray[operatorArray.length - 1] = selctedOperator;
-            console.log(operatorArray);
-            actualiseDisplayCalc();
-        } else {
-            operatorArray.push(selctedOperator);
-            console.log(operatorArray);
-            actualiseDisplayCalc();
-        }
+        operatorArray.push(selctedOperator);
+        actualiseDisplayCalc();
     } else {
-
+        console.log("hi");
+        handleShowResultClick();
+        operatorArray.push(selctedOperator);
+        actualiseDisplayCalc();
     }
-    setLastClick("operator");
+    lastClick = "operator";
 }
 
 function handleClearClick() {
@@ -151,11 +148,11 @@ function handleClearClick() {
         delete all safed nu-values and operator
         clear display
         */
-       numArray = [];
-       operatorArray = [];
-       result = null;
-       setLastClick(null);
-       clearDisplays();
+    numArray = [];
+    operatorArray = [];
+    result = null;
+    lastClick = null;
+    clearDisplays();
 }
 
 function handleShowResultClick() {
@@ -171,10 +168,14 @@ function handleShowResultClick() {
             get result of calc
             safe result and actualise display
             */
-    if (numArray.length === 2 && operatorArray.length === 1){
+           console.log("resuslt funk");
+    if (numArray.length === 2 && operatorArray.length === 1) {
         result = operate(operatorArray[0], numArray[0], numArray[1]);
         actualiseDisplayResult();
-    } else if (numArray.length > 2 && operatorArray >1){
-       /*  result = operate(operatorArray[]) */
+        setLastClick = "equal";
+    } else if (numArray.length > 2 && operatorArray.length > 1) {
+        result = operate(operatorArray[operatorArray.length - 1], result, numArray[numArray.length - 1]);
+        actualiseDisplayResult();
+        setLastClick = "equal";
     }
 }
