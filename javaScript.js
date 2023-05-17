@@ -111,7 +111,7 @@ function clearDisplays() {
     displayResult.innerHTML = 0;
 }
 
-function createOneNumber(number) {
+function mergeNumbers(number) {
     return numArray[numArray.length - 1] + number.toString();
 }
 
@@ -123,10 +123,10 @@ function handleNumberClick(number) {
         if (numArray.length === 0) {
             numArray[0] = number.toString();
         } else if (getLastClick() === "number") {
-            numArray[numArray.length - 1] = createOneNumber(number);
+            numArray[numArray.length - 1] = mergeNumbers(number);
         } else if (getLastClick() === "equal") {
             if (numArray.length === 1) {
-                numArray[numArray.length - 1] = createOneNumber(number);
+                numArray[numArray.length - 1] = mergeNumbers(number);
             } else {
                 handleClearClick();
                 handleNumberClick(number);
