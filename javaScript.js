@@ -4,6 +4,22 @@ let lastClick = null;
 let result = null;
 let lastClickArray = []
 
+function setNumArray(value){
+    numArray.push(value);
+}
+
+function getNumArray(index){
+    return numArray[index];
+}
+
+function actualiseNumArray(value){
+    numArray[numArray.length - 1] = mergeNumbers(value);
+}
+
+function getNumArrayLength(){
+    return numArray.length;
+}
+
 function setLastClick(value) {
     lastClickArray.push(value);
 }
@@ -120,19 +136,19 @@ function handleNumberClick(number) {
         handleClearClick();
         handleNumberClick(number);
     } else {
-        if (numArray.length === 0) {
-            numArray[0] = number.toString();
+        if (getNumArrayLength() === 0) {
+            setNumArray(number.toString());
         } else if (getLastClick() === "number") {
-            numArray[numArray.length - 1] = mergeNumbers(number);
+            actualiseNumArray(number);
         } else if (getLastClick() === "equal") {
             if (numArray.length === 1) {
-                numArray[numArray.length - 1] = mergeNumbers(number);
+                actualiseNumArray(number);
             } else {
                 handleClearClick();
                 handleNumberClick(number);
             }
         } else {
-            numArray.push(number.toString());
+            setNumArray(number.toString());
         }
         setLastClick("number");
         actualiseDisplayCalc();
