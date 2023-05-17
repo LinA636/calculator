@@ -2,13 +2,38 @@ let numArray = []; // saves numbers as string
 let operatorArray = [];
 let lastClick = null;
 let result = null;
+let lastClickArray = []
 
 function setLastClick(value) {
-    lastClick = value;
+    lastClickArray.push(value);
 }
 
 function getLastClick() {
-    return lastClick;
+    return lastClickArray[lastClickArray.length - 1];
+}
+
+function removeLastClick() {
+    return lastClickArray.pop();
+}
+
+function removeLastNumberPart() {
+    if (numArray.length === 1) {
+        let lastNumber = numArray.pop();
+        let lastNumberLength = lastNumber.length;
+        if (lastNumberLength === 1) {
+            handleClearClick();
+        } else {
+            numArray.push(lastNumber.slice(0, -1));
+        }
+    } else {
+        let lastNumber = numArray.pop();
+        let lastNumberLength = lastNumber.length;
+        if (lastNumberLength === 1) {
+            // do nothing
+        } else {
+            numArray.push(lastNumber.slice(0, -1));
+        }
+    }
 }
 
 function setResult(value) {
@@ -17,7 +42,7 @@ function setResult(value) {
     } else {
         if ((value - Math.floor(value)) !== 0) {
             // number has a decimal
-            result = Math.round(value*100)/100;
+            result = Math.round(value * 100) / 100;
         } else {
             result = value;
         }
@@ -124,7 +149,9 @@ function handleDecimalPointClick() {
         handleDecimalPointClick();
     } else {
         if (numArray.length === 0) {
-            numArray[0] = "0.";
+            numArray.push("0.");
+            setLastClick("number");
+            actualiseDisplayCalc();
         } else {
             if (getLastClick() === "number") {
                 if (!checkForDecimalPoint(numArray.length - 1)) {
@@ -132,12 +159,13 @@ function handleDecimalPointClick() {
                     setLastClick("number");
                     actualiseDisplayCalc();
                 }
-            } else if (getLastClick() != "numer") {
-                if (!checkForDecimalPoint(numArray.length - 1)) {
-                    numArray.push("0.");
-                    setLastClick("number");
-                    actualiseDisplayCalc();
-                }
+            } else if (getLastClick() === "equal") {
+                handleClearClick();
+                handleDecimalPointClick();
+            } else {
+                numArray.push("0.");
+                setLastClick("number");
+                actualiseDisplayCalc();
             }
         }
     }
@@ -149,15 +177,14 @@ function handleOperatorClick(selctedOperator) {
     } else {
         if (numArray.length === 0) {
             // do nothing
-        }
-        else if (numArray.length === 1) {
+        } else if (numArray.length === 1) {
             if (getLastClick() === "operator") {
-                operatorArray[operatorArray.length - 1] = selctedOperator
+                operatorArray[operatorArray.length - 1] = selctedOperator;
             } else {
                 operatorArray.push(selctedOperator);
-                actualiseDisplayCalc();
                 setLastClick("operator");
             }
+            actualiseDisplayCalc();
         } else {
             if (getLastClick() === "operator") {
                 operatorArray[operatorArray.length - 1] = selctedOperator;
@@ -181,6 +208,7 @@ function handleOperatorClick(selctedOperator) {
 function handleClearClick() {
     numArray = [];
     operatorArray = [];
+    lastClickArray = [];
     setResult(null);
     setLastClick(null);
     clearDisplays();
@@ -201,5 +229,17 @@ function handleShowResultClick() {
             actualiseDisplayResult();
             setLastClick("equal");
         }
+    }
+}
+
+function handleDeleteClick() {
+    if (getLastClick() === []) {
+        // do nothing
+    } else if (getLastClick() === "number") {
+        removeLastNumberPart();
+        actualiseDisplayCalc();
+        removeLastClick();
+    } else if (getLastClick() === "equal") {
+        handleClearClick();
     }
 }
